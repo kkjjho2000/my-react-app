@@ -1,10 +1,47 @@
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { 
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, 
+  PieChart, Pie, Cell 
+} from 'recharts';
 import { TrendingUp, TrendingDown, DollarSign, Users, Package, Factory } from 'lucide-react';
 
-const CostDashboard = () => {
-  // Sample data
+type KPICardProps = {
+  title: string;
+  value: string | number;
+  icon: React.ElementType;
+  trend: number;
+  color: string;
+};
+
+const KPICard: React.FC<KPICardProps> = ({ title, value, icon: Icon, trend, color }) => (
+  <Card className="bg-white">
+    <CardContent>
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-sm text-gray-500">{title}</p>
+          <p className="text-2xl font-bold mt-1">{value}</p>
+        </div>
+        <div className={`p-3 rounded-full ${color}`}>
+          <Icon size={24} className="text-white" />
+        </div>
+      </div>
+      <div className="mt-4 flex items-center">
+        {trend > 0 ? (
+          <TrendingUp size={16} className="text-green-500" />
+        ) : (
+          <TrendingDown size={16} className="text-red-500" />
+        )}
+        <span className={`ml-1 ${trend > 0 ? 'text-green-500' : 'text-red-500'}`}>
+          {Math.abs(trend)}%
+        </span>
+        <span className="ml-2 text-gray-500">vs Last Month</span>
+      </div>
+    </CardContent>
+  </Card>
+);
+
+const CostDashboard: React.FC = () => {
   const monthlyData = [
     { month: 'Jan', labor: 150, materials: 280, depreciation: 50, rent: 100 },
     { month: 'Feb', labor: 155, materials: 290, depreciation: 50, rent: 100 },
@@ -20,33 +57,6 @@ const CostDashboard = () => {
     { name: 'Equipment Depreciation', value: 50, color: '#FFBB28' },
     { name: 'Facility Rent', value: 100, color: '#0088FE' }
   ];
-
-  const KPICard = ({ title, value, icon: Icon, trend, color }) => (
-    <Card className="bg-white">
-      <CardContent className="p-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-sm text-gray-500">{title}</p>
-            <p className="text-2xl font-bold mt-1">{value}</p>
-          </div>
-          <div className={`p-3 rounded-full ${color}`}>
-            <Icon size={24} className="text-white" />
-          </div>
-        </div>
-        <div className="mt-4 flex items-center">
-          {trend > 0 ? (
-            <TrendingUp size={16} className="text-green-500" />
-          ) : (
-            <TrendingDown size={16} className="text-red-500" />
-          )}
-          <span className={`ml-1 ${trend > 0 ? 'text-green-500' : 'text-red-500'}`}>
-            {Math.abs(trend)}%
-          </span>
-          <span className="ml-2 text-gray-500">vs Last Month</span>
-        </div>
-      </CardContent>
-    </Card>
-  );
 
   return (
     <div className="p-6 bg-gray-50 space-y-6">
