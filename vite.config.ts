@@ -14,4 +14,5 @@ export default defineConfig({
     host: "0.0.0.0", // 允許外部訪問
     allowedHosts: [".ngrok-free.app"], // 允許 ngrok 網址
   },
+  base: "/my-react-app/", // ⚠️ GitHub Pages 部署設定（確保與 GitHub Repository 名稱相同）
 });
